@@ -9,6 +9,9 @@ export default {
             colors: {
               blue: "#1E40AF", // Custom blue color
             },
+            fontFamily: {
+        kumbh: ['"Kumbh Sans"', 'sans-serif'],
+      },
           },
         },
     plugins: [],
