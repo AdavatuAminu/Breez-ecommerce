@@ -5,14 +5,7 @@ function Header() {
     <header className='p-6 border-b border-gray-300 text-black'>
       <nav className='flex justify-between items-center'>
         <div className='flex gap-8 text-md'>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            `${isActive ? 'font-bold' : ''} hover:font-bold`
-          }
-        >
-          Sneakers
-        </NavLink>
+            <img src='/logo.svg' alt='logo'></img>
         <NavLink
           to="/collection"
           className={({ isActive }) =>
