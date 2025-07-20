@@ -3,6 +3,17 @@ import { useCart } from '../context/CartContext';
 
 export default function Women() {
     const { addToCart } = useCart();
+    const [count, setCount] = useState(0);
+    const [mainImage, setMainImage] = useState("/image-product-1.jpg");
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const imageThumbnails = [
+        "/image-product-1.jpg",
+        "/image-product-2.jpg",
+        "/image-product-3.jpg",
+        "/image-product-4.jpg"
+    ];
 
     const handleAddToCart = () => {
         const product = {
@@ -13,29 +24,31 @@ export default function Women() {
         };
         if (count > 0) {
             addToCart(product);
-            setCount(0); // Reset count
+            setCount(0);
         }
     };
-    const [count, setCount] = useState(0);
-    const [mainImage, setMainImage] = useState("/image-product-1.jpg");
-    const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const increment = () => setCount(prev => prev + 1);
-    const decrement = () => setCount(prev => (prev > 0 ? prev - 1 : 0));
+    const handleNext = () => {
+        const nextIndex = (selectedIndex + 1) % imageThumbnails.length;
+        setMainImage(imageThumbnails[nextIndex]);
+        setSelectedIndex(nextIndex);
+    };
 
-    const imageThumbnails = [
-        "/image-product-1.jpg",
-        "/image-product-2.jpg",
-        "/image-product-3.jpg",
-        "/image-product-4.jpg"
-    ];
+    const handlePrev = () => {
+        const prevIndex = (selectedIndex - 1 + imageThumbnails.length) % imageThumbnails.length;
+        setMainImage(imageThumbnails[prevIndex]);
+        setSelectedIndex(prevIndex);
+    };
 
     return (
-        <div className="flex justify-center items-center min-h-screen gap-35">
+        <div className="flex justify-center items-center min-h-screen gap-30">
             {/* Left side */}
             <div className="flex flex-col items-center gap-4">
                 {/* Top Image */}
-                <div className="h-[400px] w-[400px]">
+                <div
+                    className="h-[400px] w-[400px] cursor-pointer"
+                    onClick={() => setIsPopupOpen(true)}
+                >
                     <img src={mainImage} alt="main display" className="rounded-xl w-full h-full object-cover" />
                 </div>
 
@@ -44,27 +57,24 @@ export default function Women() {
                     {imageThumbnails.map((img, index) => (
                         <div
                             key={index}
-                            className={`relative h-[80px] w-[80px] rounded-xl cursor-pointer overflow-hidden 
-        ${selectedIndex === index ? 'border-2 border-orange-500' : 'border-2 border-transparent'}`}
+                            className={`relative h-[70px] w-[70px] rounded-xl cursor-pointer overflow-hidden 
+    ${selectedIndex === index ? 'border-2 border-orange-500' : 'border-2 border-transparent'}`}
                             onClick={() => {
                                 setMainImage(img);
                                 setSelectedIndex(index);
                             }}
                         >
-                            <img
-                                src={img}
-                                alt={`thumb-${index}`}
-                                className="rounded-xl w-full h-full object-cover"
-                            />
+                            <img src={img} alt={`thumb-${index}`} className="rounded-xl w-full h-full object-cover" />
 
-                            {/* Gray hover overlay */}
-                            {selectedIndex !== index && (
-                                <div className="absolute inset-0 hover:bg-gray-300/50 transition duration-200 rounded-xl" />
-                            )}
+                            {/* Overlay for both selected and hover */}
+                            <div
+                                className={`absolute inset-0 rounded-xl transition duration-200 
+      ${selectedIndex === index ? 'bg-gray-300/50' : 'hover:bg-gray-300/50'}`}
+                            />
                         </div>
+
                     ))}
                 </div>
-
             </div>
 
             {/* Right side */}
@@ -82,21 +92,97 @@ export default function Women() {
                 <span className="font-bold text-left line-through"><h1>$250.00</h1></span>
 
                 <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-2 w-full md:w-40">
-              <button onClick={() => setCount(count > 0 ? count - 1 : 0)} className="font-bold text-lg text-orange-500">-</button>
-              <span>{count}</span>
-              <button onClick={() => setCount(count + 1)} className="font-bold text-lg text-orange-500">+</button>
+                    <div className="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-2 w-full md:w-40">
+                        <button onClick={() => setCount(count > 0 ? count - 1 : 0)} className="font-bold text-lg text-orange-500">-</button>
+                        <span>{count}</span>
+                        <button onClick={() => setCount(count + 1)} className="font-bold text-lg text-orange-500">+</button>
+                    </div>
+
+                    <button
+                        onClick={handleAddToCart}
+                        className="flex bg-orange-500 hover:bg-orange-200 justify-center items-center px-10 py-3 gap-5 rounded-xl text-white font-bold w-full md:w-auto"
+                    >
+                        <img src="/icon-cart.svg" alt="cart" />
+                        <span className='text-black'>Add to cart</span>
+                    </button>
+                </div>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              className="flex bg-orange-500 hover:bg-orange-200 justify-center items-center px-10 py-3 gap-5 rounded-xl text-white font-bold w-full md:w-auto"
-            >
-              <img src="/icon-cart.svg" alt="cart" />
-              <span className='text-black'>Add to cart</span>
-            </button>
-          </div>
-            </div>
+            {/* 🔍 Lightbox Popup */}
+            {isPopupOpen && (
+                <div className="fixed inset-0 z-50 bg-stone-800/70 flex justify-center items-center">
+                    <div className="relative rounded-xl p-4">
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsPopupOpen(false)}
+                            className="absolute top-[-30px] right-[15px] text-orange-500 hover:text-black text-4xl"
+                        >
+                            &times;
+                        </button>
+
+                        {/* Main popup image */}
+                        <div className="w-[400px] h-[400px] relative">
+                            <img src={mainImage} alt="popup" className="w-full h-full rounded-xl object-cover" />
+
+                            {/* Navigation Arrows */}
+                            <button
+                                onClick={handlePrev}
+                                className="absolute left-[-20px] top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow group"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-4 h-4 stroke-current text-gray-500 group-hover:text-orange-500"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+
+                            <button
+                                onClick={handleNext}
+                                className="absolute right-[-20px] top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow group"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-4 h-4 stroke-current text-gray-500 group-hover:text-orange-500"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+
+                        </div>
+
+                        {/* Thumbnails below */}
+                        <div className="flex justify-center gap-6 mt-4">
+                            {imageThumbnails.map((img, index) => (
+                                <div
+                                    key={index}
+                                    className={`relative h-[70px] w-[70px] rounded-xl cursor-pointer overflow-hidden 
+    ${selectedIndex === index ? 'border-2 border-orange-500' : 'border-2 border-transparent'}`}
+                                    onClick={() => {
+                                        setMainImage(img);
+                                        setSelectedIndex(index);
+                                    }}
+                                >
+                                    <img src={img} alt={`thumb-${index}`} className="rounded-xl w-full h-full object-cover" />
+
+                                    {/* Overlay for both selected and hover */}
+                                    <div
+                                        className={`absolute inset-0 rounded-xl transition duration-200 
+      ${selectedIndex === index ? 'bg-gray-300/50' : 'hover:bg-gray-300/50'}`}
+                                    />
+                                </div>
+
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
