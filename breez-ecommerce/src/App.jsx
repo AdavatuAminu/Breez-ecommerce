@@ -9,17 +9,17 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 
 function App() {
-
   return (
     <BrowserRouter>
-    <Header />
-    <Routes>
-      <Route path='/collection'element={<Collection />} />
-      <Route path='/men'element={<Men />} />
-      <Route path='/women'element={<Women />} />
-      <Route path='/about'element={<About />} />
-      <Route path='/contact'element={<Contact />} />
-    </Routes>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Women />} />
+        <Route path='/collection' element={<Collection />} />
+        <Route path='/men' element={<Men />} />
+        <Route path='/women' element={<Women />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
+      </Routes>
     </BrowserRouter>
   )
 }
