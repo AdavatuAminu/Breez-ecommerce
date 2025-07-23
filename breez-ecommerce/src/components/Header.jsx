@@ -115,13 +115,13 @@ function Header() {
     return (
         <header className="fixed top-0 left-0 w-full z-50 bg-white p-6 text-black h-20">
             {/* Mobile View */}
-            <div className="md:hidden px-4">
+            <div className="md:hidden px-2">
                 <Navigation />
                 <MobileMenu />
             </div>
 
             {/* Desktop View */}
-            <div className="hidden md:block border-b border-gray-300 max-w-6xl mx-auto px-6">
+            <div className="hidden md:block border-b border-gray-300 max-w-6xl mx-auto px-1">
                 <Navigation />
             </div>
         </header>
