@@ -52,12 +52,12 @@ export default function Women() {
     };
 
     return (
-        <div className="flex md:flex-row flex-col md:items-center md:gap-30 gap-6 pt-6">
+        <div className="flex md:flex-row flex-col md:items-start md:gap-30 gap-6 pt-6 md:mt-20 w-full">
             {/* Left side */}
             <div className="flex flex-col items-center gap-4">
                 {/* Top Image */}
-                <div
-                    className={`relative h-[400px] w-[400px] ${isDesktop ? 'cursor-pointer' : 'cursor-default'}`}
+               <div
+                    className={`relative w-screen max-w-none md:w-[400px] md:h-[400px] ${isDesktop ? 'cursor-pointer' : 'cursor-default'}`}
                     onClick={isDesktop ? () => setIsPopupOpen(true) : undefined}
                 >
                     <img

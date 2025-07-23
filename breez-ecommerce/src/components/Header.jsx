@@ -21,10 +21,11 @@ function Header() {
                     className="h-4 md:hidden cursor-pointer"
                     onClick={() => setIsMobileMenuOpen(true)}
                 />
-                <img src="/logo.svg" alt="logo" className="h-6" />
-
+                
+                <img src="/logo.svg" alt="logo" className="h-6 md:h-7" />
+                
                 {/* Desktop NavLinks */}
-                <div className="hidden md:flex gap-6 text-md ml-8">
+                <div className="hidden md:flex gap-6 text-md ml-8 mt-6">
                     {menuLinks.map((route) => (
                         <NavLink
                             key={route}
